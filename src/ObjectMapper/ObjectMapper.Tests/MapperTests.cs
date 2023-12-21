@@ -1,0 +1,166 @@
+using ObjectMapper.Models;
+using System.Reflection.Emit;
+using System.Text.Json;
+
+namespace ObjectMapper.Tests
+{
+    public class MapperTests
+    {
+        [Fact]
+        public void Map_ShouldMapObject()
+        {
+            // Arrange
+            var jsonMapping = "{\"Personnr\": { \"Type\": \"String\", \"Value\": \"StudentSSN\" }," +
+                "\"Adress\": { \"Type\": \"String\", \"Value\": \"Address\"}," +
+                "\"Name\": { \"Type\": \"Array\", \"List\": [\"Firstname\", \"Lastname\"]}," +
+                "\"Postnr\": { \"Type\": \"String\", \"Value\": \"ZipCode\"}," +
+                "\"Padress\": { \"Type\": \"String\", \"Value\": \"City\"}," +
+                "\"Arskurs\": { \"Type\": \"String\", \"Value\": \"Grade\"}" +
+                "}";
+
+            var propertyMappings = JsonSerializer.Deserialize<Dictionary<string, MappingDescription>>(jsonMapping);
+
+            dynamic sourceApplication = new
+            {
+                StudentSSN = "860803-0097",
+                Address = "Address 123",
+                Firstname = "Tomas",
+                Lastname = "Svensson",
+                ZipCode = "67133",
+                City = "Arvika",
+                Grade = 5
+            };
+
+            // Act
+            var result = Mapper.Map(sourceApplication, propertyMappings);
+
+            // Assert
+            ((string)result.Personnr).Should().Be(sourceApplication.StudentSSN);
+            ((string)result.Adress).Should().Be(sourceApplication.Address);
+            ((string)result.Name).Should().Be($"{sourceApplication.Firstname}, {sourceApplication.Lastname}");
+            ((string)result.Postnr).Should().Be(sourceApplication.ZipCode);
+            ((string)result.Padress).Should().Be(sourceApplication.City);
+            ((int)result.Arskurs).Should().Be(sourceApplication.Grade);
+        }
+
+        [Fact]
+        public void MapXml_ShouldMapObject()
+        {
+            // Arrange
+            var xml = @"<?xml version='1.0' encoding='UTF-8'?>
+                        <Data>
+                            <Personnr>
+                                <Type>String</Type>
+                                <Value>StudentSSN</Value>
+                            </Personnr>
+                            <Adress>
+                                <Type>String</Type>
+                                <Value>Address</Value>
+                            </Adress>
+                            <Name>
+                                <Type>Array</Type>
+                                <Value>Firstname</Value>
+                                <Value>Lastname</Value>
+                            </Name>
+                            <Postnr>
+                                <Type>String</Type>
+                                <Value>ZipCode</Value>
+                            </Postnr>
+                            <Padress>
+                                <Type>String</Type>
+                                <Value>City</Value>
+                            </Padress>
+                            <Arskurs>
+                                <Type>String</Type>
+                                <Value>Grade</Value>
+                            </Arskurs>
+                         </Data>";
+
+            dynamic sourceApplication = new
+            {
+                StudentSSN = "860803-0097",
+                Address = "Address 123",
+                Firstname = "Tomas",
+                Lastname = "Svensson",
+                ZipCode = "67133",
+                City = "Arvika",
+                Grade = 5
+            };
+
+            // Act
+            var result = Mapper.MapXml(sourceApplication, xml);
+
+            // Assert
+            ((string)result.Personnr).Should().Be(sourceApplication.StudentSSN);
+            ((string)result.Adress).Should().Be(sourceApplication.Address);
+            ((string)result.Name).Should().Be($"{sourceApplication.Firstname}, {sourceApplication.Lastname}");
+            ((string)result.Postnr).Should().Be(sourceApplication.ZipCode);
+            ((string)result.Padress).Should().Be(sourceApplication.City);
+            ((int)result.Arskurs).Should().Be(sourceApplication.Grade);
+        }
+
+        [Fact]
+        public void Map_ShouldMapNestedObject()
+        {
+            // Arrange
+            var jsonMapping = "{\"Personnr\": { \"Type\": \"String\", \"Value\": \"application.StudentSSN\" }," +
+                "\"Adress\": { \"Type\": \"String\", \"Value\": \"application.Address\"}," +
+                "\"Name\": { \"Type\": \"Array\", \"List\": [\"application.Firstname\", \"application.Lastname\"]}," +
+                "\"Postnr\": { \"Type\": \"String\", \"Value\": \"application.ZipCode\"}," +
+                "\"Padress\": { \"Type\": \"String\", \"Value\": \"application.City\"}," +
+                "\"Kommunnr\": { \"Type\": \"String\", \"Value\": \"municiaplity.AreaCode\"}," +
+                "\"Omrade\": { \"Type\": \"String\", \"Value\": \"municiaplity.County\"}," +
+                "\"Lan\": { \"Type\": \"String\", \"Value\": \"municiaplity.CountyCode\"}," +
+                "\"Arskurs\": { \"Type\": \"String\", \"Value\": \"application.Grade\"}," +
+                "\"Skola\": { \"Type\": \"String\", \"Value\": \"school.School\"}" +
+                "}";
+
+            var propertyMappings = JsonSerializer.Deserialize<Dictionary<string, MappingDescription>>(jsonMapping);
+
+            dynamic sourceApplication = new
+            {
+                StudentSSN = "860803-0097",
+                Address = "Address 123",
+                Firstname = "Tomas",
+                Lastname = "Svensson",
+                ZipCode = "67133",
+                City = "Arvika",
+                Grade = 5
+            };
+
+            dynamic sourceSchool = new
+            {
+                School = "84DO",
+            };
+
+            dynamic sourceMuniciaplity = new
+            {
+                AreaCode = 84,
+                County = "Arvika",
+                CountyCode = 17
+            };
+
+            dynamic source = new
+            {
+                application = sourceApplication,
+                school = sourceSchool,
+                municiaplity = sourceMuniciaplity,
+            };
+
+            // Act
+            var result = Mapper.Map(source, propertyMappings);
+
+            // Assert
+            ((string)result.Personnr).Should().Be(sourceApplication.StudentSSN);
+            ((string)result.Adress).Should().Be(sourceApplication.Address);
+            ((string)result.Name).Should().Be($"{sourceApplication.Firstname}, {sourceApplication.Lastname}");
+            ((string)result.Postnr).Should().Be(sourceApplication.ZipCode);
+            ((string)result.Padress).Should().Be(sourceApplication.City);
+            ((int)result.Kommunnr).Should().Be(sourceMuniciaplity.AreaCode);
+            ((string)result.Omrade).Should().Be(sourceMuniciaplity.County);
+            ((int)result.Lan).Should().Be(sourceMuniciaplity.CountyCode);
+            ((int)result.Arskurs).Should().Be(sourceApplication.Grade);
+            ((string)result.Skola).Should().Be(sourceSchool.School);
+        }
+    }
+}
