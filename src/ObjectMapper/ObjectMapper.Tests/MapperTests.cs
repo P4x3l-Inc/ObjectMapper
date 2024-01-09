@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using ObjectMapper.Models;
 using System.Reflection.Emit;
 using System.Text.Json;
@@ -18,7 +19,7 @@ namespace ObjectMapper.Tests
                 "\"Arskurs\": { \"Type\": \"String\", \"Value\": \"Grade\"}" +
                 "}";
 
-            var propertyMappings = JsonSerializer.Deserialize<Dictionary<string, MappingDescription>>(jsonMapping);
+            var propertyMappings = JsonConvert.DeserializeObject<Dictionary<string, MappingDescription>>(jsonMapping);
 
             dynamic sourceApplication = new
             {
@@ -59,8 +60,8 @@ namespace ObjectMapper.Tests
                             </Adress>
                             <Name>
                                 <Type>Array</Type>
-                                <Value>Firstname</Value>
-                                <Value>Lastname</Value>
+                                <List>Firstname</List>
+                                <List>Lastname</List>
                             </Name>
                             <Postnr>
                                 <Type>String</Type>
@@ -115,7 +116,7 @@ namespace ObjectMapper.Tests
                 "\"Skola\": { \"Type\": \"String\", \"Value\": \"school.School\"}" +
                 "}";
 
-            var propertyMappings = JsonSerializer.Deserialize<Dictionary<string, MappingDescription>>(jsonMapping);
+            var propertyMappings = JsonConvert.DeserializeObject<Dictionary<string, MappingDescription>>(jsonMapping);
 
             dynamic sourceApplication = new
             {

@@ -1,7 +1,5 @@
 ﻿using ObjectMapper.Models;
 using System.Dynamic;
-using ObjectMapper.Extensions;
-using System.Linq;
 using System.Xml;
 using Newtonsoft.Json;
 
@@ -24,8 +22,8 @@ namespace ObjectMapper
                     var result = new List<object>();
                     foreach (var val in values)
                     {
-                        var propDepth = ConvertDynamicToList(val).Split(".").ToList();
-                        if (propDepth.Count > 1)
+                        var propDepth = val.Split(".").ToList();
+                        if (propDepth.Count() > 1)
                         {
                             var parent = source.GetType().GetProperty(propDepth[0])?.GetValue(source);
 
@@ -67,16 +65,6 @@ namespace ObjectMapper
             var obj = XmlToJson(xml);
 
             return Map(source, obj);
-        }
-
-        static List<string> ConvertDynamicToList(dynamic dynamicCollection)
-        {
-            // Use LINQ to convert dynamic to List<string>
-            List<string> stringList = dynamicCollection != null
-                ? ((IEnumerable<dynamic>)dynamicCollection).Select(item => (string)item).ToList()
-                : new List<string>();
-
-            return stringList;
         }
 
         static IDictionary<string, MappingDescription> XmlToJson(string xmlString)
