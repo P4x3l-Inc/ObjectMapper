@@ -1,7 +1,6 @@
 ﻿using DynamicObjectMapper.Models;
 using System.Dynamic;
-using System.Xml;
-using Newtonsoft.Json;
+using DynamicObjectMapper.Helpers;
 
 namespace DynamicObjectMapper
 {
@@ -62,21 +61,9 @@ namespace DynamicObjectMapper
 
         public static object MapXml(dynamic source, string xml)
         {
-            var obj = XmlToJson(xml);
+            var obj = XmlHelper.XmlToMappings(xml);
 
             return Map(source, obj);
-        }
-
-        static IDictionary<string, MappingDescription> XmlToJson(string xmlString)
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlString);
-
-            string jsonString = JsonConvert.SerializeXmlNode(xmlDoc, Newtonsoft.Json.Formatting.Indented);
-
-            var data = JsonConvert.DeserializeObject<XmlSource>(jsonString);
-
-            return data.Data;
         }
     }
 }

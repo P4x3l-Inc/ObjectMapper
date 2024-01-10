@@ -1,13 +1,10 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using DynamicObjectMapper.Helpers;
 using DynamicObjectMapper.Models;
-using System;
-using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DynamicObjectMapper.Export
 {
@@ -36,6 +33,13 @@ namespace DynamicObjectMapper.Export
                 writer.Flush();
                 return memoryStream.ToArray();
             }
+        }
+
+        public byte[] Export(string xml, IList<dynamic> data, bool includeHeaders = false)
+        {
+            var propertyMappings = XmlHelper.XmlToMappings(xml);
+
+            return Export(propertyMappings, data, includeHeaders);
         }
     }
 

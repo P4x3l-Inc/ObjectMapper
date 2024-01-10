@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DynamicObjectMapper.Models;
 
 namespace DynamicObjectMapper.Export
 {
-    internal interface ICsvExporter
+    public interface ICsvExporter
     {
+        byte[] Export(IDictionary<string, MappingDescription> propertyMappings, IList<dynamic> data, bool includeHeaders = false);
+
+        byte[] Export(string xml, IList<dynamic> data, bool includeHeaders = false);
     }
 }
