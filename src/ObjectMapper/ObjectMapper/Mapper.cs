@@ -1,9 +1,9 @@
-﻿using ObjectMapper.Models;
+﻿using DynamicObjectMapper.Models;
 using System.Dynamic;
 using System.Xml;
 using Newtonsoft.Json;
 
-namespace ObjectMapper
+namespace DynamicObjectMapper
 {
     public static class Mapper
     {

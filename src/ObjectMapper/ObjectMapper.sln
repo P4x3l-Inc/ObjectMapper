@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectMapper", "ObjectMapper\ObjectMapper.csproj", "{E9EED1CE-3CA0-4260-9E6E-ECFDA23575B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicObjectMapper", "ObjectMapper\DynamicObjectMapper.csproj", "{E9EED1CE-3CA0-4260-9E6E-ECFDA23575B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectMapper.Tests", "ObjectMapper.Tests\ObjectMapper.Tests.csproj", "{883D6D66-F10D-4947-B2E0-8C2C4380C530}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicObjectMapper.Tests", "ObjectMapper.Tests\DynamicObjectMapper.Tests.csproj", "{883D6D66-F10D-4947-B2E0-8C2C4380C530}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

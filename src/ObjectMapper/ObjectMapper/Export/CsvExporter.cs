@@ -1,6 +1,6 @@
-﻿using CsvHelper.Configuration;
-using CsvHelper;
-using ObjectMapper.Models;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using DynamicObjectMapper.Models;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ObjectMapper.Export
+namespace DynamicObjectMapper.Export
 {
     public class CsvExporter
     {

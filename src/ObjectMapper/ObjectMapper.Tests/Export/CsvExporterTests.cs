@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
-using ObjectMapper.Export;
-using ObjectMapper.Models;
+using DynamicObjectMapper.Export;
+using DynamicObjectMapper.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ObjectMapper.Tests.Export
+namespace DynamicObjectMapper.Tests.Export
 {
     public class CsvExporterTests
     {

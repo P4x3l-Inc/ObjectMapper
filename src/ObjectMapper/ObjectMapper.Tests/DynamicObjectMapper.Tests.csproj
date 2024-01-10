@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ObjectMapper\ObjectMapper.csproj" />
+    <ProjectReference Include="..\ObjectMapper\DynamicObjectMapper.csproj" />
   </ItemGroup>
 
 </Project>

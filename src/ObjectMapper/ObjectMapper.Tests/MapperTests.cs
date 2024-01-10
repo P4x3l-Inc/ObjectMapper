@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
-using ObjectMapper.Models;
+using DynamicObjectMapper.Models;
 using System.Reflection.Emit;
 using System.Text.Json;
 
-namespace ObjectMapper.Tests
+namespace DynamicObjectMapper.Tests
 {
     public class MapperTests
     {

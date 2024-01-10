@@ -1,4 +1,4 @@
-﻿namespace ObjectMapper.Models
+﻿namespace DynamicObjectMapper.Models
 {
     public class MappingDescription
     {

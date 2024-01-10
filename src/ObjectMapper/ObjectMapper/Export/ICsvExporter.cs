@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ObjectMapper.Export
+namespace DynamicObjectMapper.Export
 {
     internal interface ICsvExporter
     {
