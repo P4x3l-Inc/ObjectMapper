@@ -11,8 +11,8 @@ namespace DynamicObjectMapper.Tests.Export
         {
             // Arrange
             var jsonMapping = "{\"Personnr\": { \"Type\": \"String\", \"Value\": \"application.StudentSSN\" }," +
-                "\"Adress\": { \"Type\": \"String\", \"Value\": \"application.Address\"}," +
                 "\"Name\": { \"Type\": \"Array\", \"List\": [\"application.Firstname\", \"application.Lastname\"]}," +
+                "\"Adress\": { \"Type\": \"String\", \"Value\": \"application.Address\"}," +
                 "\"Postnr\": { \"Type\": \"String\", \"Value\": \"application.ZipCode\"}," +
                 "\"Padress\": { \"Type\": \"String\", \"Value\": \"application.City\"}," +
                 "\"Kommunnr\": { \"Type\": \"String\", \"Value\": \"municiaplity.AreaCode\"}," +
@@ -76,7 +76,7 @@ namespace DynamicObjectMapper.Tests.Export
             var exporter = new CsvExporter();
 
             // Act
-            var result = exporter.Export(propertyMappings, source);
+            var result = exporter.Export(propertyMappings, source, false, DelimiterType.Tab);
 
             // Assert
             File.WriteAllBytes(Environment.CurrentDirectory + "/test.csv", result);

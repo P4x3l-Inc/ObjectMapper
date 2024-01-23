@@ -13,12 +13,24 @@ namespace DynamicObjectMapper.Export
 {
     public class CsvExporter
     {
-        public byte[] Export(IDictionary<string, MappingDescription> propertyMappings, IList<dynamic> data, bool includeHeaders = false)
+        public byte[] Export(IDictionary<string, MappingDescription> propertyMappings, IList<dynamic> data, bool includeHeaders = false, DelimiterType delimiterType = DelimiterType.Comma)
         {
             var dataToExport = data.Select(x => Mapper.Map(x, propertyMappings)).ToList();
 
             // Create a CSV writer configuration
             var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
+            if (delimiterType == DelimiterType.Tab)
+            {
+                csvConfig.Delimiter = "\t";
+            }
+            else if (delimiterType == DelimiterType.Semicolon)
+            {
+                csvConfig.Delimiter = ";";
+            }
+            else
+            {
+                csvConfig.Delimiter = ",";
+            }
 
             // Create a memory stream to hold the CSV data
             using (var memoryStream = new MemoryStream())
@@ -38,11 +50,11 @@ namespace DynamicObjectMapper.Export
             }
         }
 
-        public byte[] Export(string xml, IList<dynamic> data, bool includeHeaders = false)
+        public byte[] Export(string xml, IList<dynamic> data, bool includeHeaders = false, DelimiterType delimiterType = DelimiterType.Comma)
         {
             var propertyMappings = XmlHelper.XmlToMappings(xml);
 
-            return Export(propertyMappings, data, includeHeaders);
+            return Export(propertyMappings, data, includeHeaders, delimiterType);
         }
     }
 

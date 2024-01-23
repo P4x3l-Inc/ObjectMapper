@@ -44,7 +44,7 @@ namespace DynamicObjectMapper
                 }
                 else
                 {
-                    var propDepth = (string[])destinationPropertyName.Value.ToString().Split('.');
+                    var propDepth = destinationPropertyName.Value.ToString().Split('.');
                     if (propDepth.Count() > 1)
                     {
                         var parent = source.GetType().GetProperty(propDepth[0])?.GetValue(source);
