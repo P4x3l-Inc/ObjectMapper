@@ -2,8 +2,11 @@
 using CsvHelper.Configuration;
 using DynamicObjectMapper.Helpers;
 using DynamicObjectMapper.Models;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace DynamicObjectMapper.Export

@@ -1,4 +1,6 @@
-﻿namespace DynamicObjectMapper.Models
+﻿using System.Collections.Generic;
+
+namespace DynamicObjectMapper.Models
 {
     public class MappingDescription
     {

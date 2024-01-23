@@ -1,5 +1,6 @@
 ﻿using DynamicObjectMapper.Models;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace DynamicObjectMapper.Helpers

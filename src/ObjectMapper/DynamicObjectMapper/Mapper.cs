@@ -1,6 +1,8 @@
 ﻿using DynamicObjectMapper.Models;
 using System.Dynamic;
 using DynamicObjectMapper.Helpers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DynamicObjectMapper
 {
@@ -21,12 +23,14 @@ namespace DynamicObjectMapper
                     var result = new List<object>();
                     foreach (var val in values)
                     {
-                        var propDepth = val.Split(".").ToList();
-                        if (propDepth.Count() > 1)
+                        var propDepth = val.Split('.').ToList();
+                        if (propDepth.Count > 1)
                         {
                             var parent = source.GetType().GetProperty(propDepth[0])?.GetValue(source);
 
-                            var value = parent.GetType().GetProperty(propDepth[1])?.GetValue(parent);
+                            var value = parent == null ?
+                                "" :
+                                parent.GetType().GetProperty(propDepth[1])?.GetValue(parent);
 
                             result.Add(value);
                         }
@@ -40,12 +44,14 @@ namespace DynamicObjectMapper
                 }
                 else
                 {
-                    var propDepth = (string[])destinationPropertyName.Value.ToString().Split(".");
+                    var propDepth = (string[])destinationPropertyName.Value.ToString().Split('.');
                     if (propDepth.Count() > 1)
                     {
                         var parent = source.GetType().GetProperty(propDepth[0])?.GetValue(source);
 
-                        var value = parent.GetType().GetProperty(propDepth[1])?.GetValue(parent);
+                        var value = parent == null ?
+                            "" :
+                            parent.GetType().GetProperty(propDepth[1])?.GetValue(parent);
 
                         ((IDictionary<string, object>)destination)[sourcePropertyName.ToString()] = value;
                     }
