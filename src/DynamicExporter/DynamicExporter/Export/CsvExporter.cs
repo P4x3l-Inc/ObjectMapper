@@ -17,11 +17,6 @@ namespace DynamicExporter.Export
     {
         public byte[] Export(IDictionary<string, MappingDescription> propertyMappings, IList<dynamic> data, bool includeHeaders = false, DelimiterType delimiterType = DelimiterType.Comma)
         {
-            if (includeHeaders)
-            {
-                throw new NotImplementedException("includeHeaders = true not yet implemented");
-            }
-
             var dataToExport = data.Select(x => DynamicMapper.Map(x, propertyMappings)).ToList();
 
             // Create a CSV writer configuration
@@ -46,7 +41,8 @@ namespace DynamicExporter.Export
             {
                 if (includeHeaders)
                 {
-                    csv.Context.RegisterClassMap<DynamicClassMap>();
+                    var classMap = new DynamicClassMap(propertyMappings);
+                    csv.Context.RegisterClassMap(classMap);
                 }
                 // Write records to CSV
                 csv.WriteRecords<dynamic>(dataToExport);
@@ -67,12 +63,31 @@ namespace DynamicExporter.Export
 
     public class DynamicClassMap : ClassMap<ExpandoObject>
     {
-        public DynamicClassMap()
+        private IDictionary<string, MappingDescription> _propertyMappings;
+
+        public DynamicClassMap(IDictionary<string, MappingDescription> propertyMappings)
         {
-            // Assuming dynamic objects have properties like Name, Age, City
-            Map(x => ((IDictionary<string, object>)x)["Name"]).Name("Name");
-            Map(x => ((IDictionary<string, object>)x)["Age"]).Name("Age");
-            Map(x => ((IDictionary<string, object>)x)["City"]).Name("City");
+            _propertyMappings = propertyMappings;
+
+            foreach (var property in _propertyMappings)
+            {
+                var header = !string.IsNullOrEmpty(property.Value.Header) ?
+                    property.Value.Header :
+                    property.Key;
+
+                Map<object>(row => GetPropertyValue((ExpandoObject)row, property.Key)).Name(header);
+            }
+        }
+
+        private object GetPropertyValue(ExpandoObject obj, string propertyName)
+        {
+            // Dynamically retrieve property value using reflection
+            IDictionary<string, object> expando = obj;
+            if (expando.ContainsKey(propertyName))
+            {
+                return expando[propertyName];
+            }
+            return null;
         }
     }
 }
